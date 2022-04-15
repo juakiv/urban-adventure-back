@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "watch": "nodemon index.js",
     "test": "jest --watch"
   },
   "repository": {
@@ -16,9 +17,12 @@
   },
   "homepage": "https://github.com/juakiv/urban-adventure-back#readme",
   "devDependencies": {
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "express": "^4.17.3"
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "ws": "^8.5.0"
   }
 }
