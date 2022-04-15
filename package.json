@@ -1,0 +1,24 @@
+{
+  "name": "urban-adventure-back",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juakiv/urban-adventure-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juakiv/urban-adventure-back/issues"
+  },
+  "homepage": "https://github.com/juakiv/urban-adventure-back#readme",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  },
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
