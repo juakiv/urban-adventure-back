@@ -19,59 +19,74 @@ module.exports = class WebSocketServer {
   }
 
   handleMessage(client, message) {
-    let msg;
-    try {
-      msg = JSON.parse(message);
-    } catch(e) {
-      console.log("Invalid JSON received.");
-      client.close();
-      return false;
-    }
-    
+    // tarkistetaan onko viestin JSON validia
+    let msg = this.checkMessageValidity(message);
+    if(!msg) return false;
+
     let messageType = "type" in msg && msg["type"] != null ? msg["type"] : null;
     if(messageType == null) {
       console.log("Invalid JSON received.");
-      client.close();
       return false;
     }
 
     const mongo = process.env.MONGODB_URI;
     mongoose.connect(mongo);
+
     if(messageType == "addScore") {
-      const score = new Score({
-        name: msg["username"],
-        score: msg["score"]
-      });
-
-      score.save();
-
-      return true;
+      if(this.addScore(msg)) {
+        console.log("Added score successfully.");
+      } else {
+        console.log("Adding score failed.");
+      }
     }
 
     if(messageType == "showScores") {
-      Score
-        .find({})
-        .sort({ score: "descending" })
-        .then(scores => scores.map((score, i) => {
-          return {
-            name: score.name,
-            score: score.score,
-            index: i + 1
-          }})
-        )
-        .then(scores => {
-          client.send(JSON.stringify({messageType: "scores", scores}));
-        });
-
-      return true;
+      this.loadScoreboard(client);
     }
-
 
     if(messageType == "ping") {
       client.send(JSON.stringify({messageType: "pong"}));
     }
 
+  }
 
+  checkMessageValidity(message) {
+    let msg;
+    try {
+      msg = JSON.parse(message);
+    } catch(e) {
+      console.log("Invalid JSON received.");
+      return false;
+    }
+    return msg;
+  }
 
+  addScore(message) {
+    const score = new Score({
+      name: message["username"],
+      score: message["score"]
+    });
+
+    score.save();
+
+    return true;
+  }
+
+  loadScoreboard(client) {
+    Score
+      .find({})
+      .sort({ score: "descending" })
+      .then(scores => scores.map((score, i) => {
+        return {
+          name: score.name,
+          score: score.score,
+          index: i + 1
+        }})
+      )
+      .then(scores => {
+        client.send(JSON.stringify({messageType: "scores", scores}));
+      });
+
+    return true;
   }
 }
