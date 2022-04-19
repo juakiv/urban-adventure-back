@@ -67,6 +67,11 @@ module.exports = class WebSocketServer {
     }
 
 
+    if(messageType == "ping") {
+      client.send(JSON.stringify({messageType: "pong"}));
+    }
+
+
 
   }
 }
