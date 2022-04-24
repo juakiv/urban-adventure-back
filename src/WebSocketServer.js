@@ -29,8 +29,10 @@ module.exports = class WebSocketServer {
       return false;
     }
 
-    const mongo = process.env.MONGODB_URI;
-    mongoose.connect(mongo);
+    if(messageType !== "ping") {
+      const mongo = process.env.MONGODB_URI;
+      mongoose.connect(mongo);
+    }
 
     if(messageType == "addScore") {
       if(this.addScore(msg)) {
