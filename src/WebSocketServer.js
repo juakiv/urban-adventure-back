@@ -58,6 +58,11 @@ module.exports = class WebSocketServer {
       console.log("Invalid JSON received.");
       return false;
     }
+
+    if(msg === null) return false;
+    if(!("type" in msg)) return false;
+    if(msg["type"] == null) return false;
+
     return msg;
   }
 
