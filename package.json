@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "watch": "nodemon index.js",
-    "test": "jest --watch --detectOpenHandles"
+    "test": "jest --forceExit"
   },
   "repository": {
     "type": "git",
